@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     public personaService: PersonaService
   ) {
     this.personaForm = this.fb.group({
+      id: [''],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       edad: ['', Validators.required],
@@ -58,6 +59,7 @@ export class AppComponent implements OnInit {
     this.personaService.savePersona(this.personaForm.value).subscribe(resp=>{
       console.log(this.personaForm.value)
       this.personaForm.reset();
+      this.persona = this.persona.filter((persona: { id: any; })=> resp.id != persona.id)
       this.persona.push(resp);
     },
      error=>{console.error(error)
@@ -65,6 +67,27 @@ export class AppComponent implements OnInit {
      }
     )
 
+  }
+
+  eliminar(persona: { id: any; }): void {
+    this.personaService.deletePersona(persona.id).subscribe(resp=>{
+      if(resp == true){
+        this.persona.pop(persona);
+      }
+    },
+    error=>{console.error(error)}
+    )
+  }
+
+  editar(persona: { id: any; nombre: any; apellido: any; edad: any; pais: any; estado: any; }){
+    this.personaForm.setValue({
+      id: persona.id,
+      nombre: persona.nombre ,
+      apellido: persona.apellido ,
+      edad: persona.edad ,
+      pais: persona.pais ,
+      estado: persona.estado ,  
+  })
   }
 
 

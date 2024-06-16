@@ -19,4 +19,10 @@ export class PersonaService {
   public savePersona(persona: any): Observable<any> {
     return this.httpCliente.post(this.API_SERVER, persona);
   }
+
+  public deletePersona(id: any): Observable<any> {
+    return this.httpCliente.delete(this.API_SERVER + "delete/" + id);
+  }
+
 }
+  
